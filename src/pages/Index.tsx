@@ -9,7 +9,7 @@ import Fireworks from "../components/Fireworks";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-navy-900">
+    <div className="min-h-screen bg-navy-900 relative">
       <Fireworks />
       <Header />
       <Welcome />

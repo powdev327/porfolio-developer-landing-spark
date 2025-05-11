@@ -16,6 +16,33 @@ type Firework = {
 const Fireworks = () => {
   const [fireworks, setFireworks] = useState<Firework[]>([]);
   const [isActive, setIsActive] = useState(false);
+  const [developerImagePosition, setDeveloperImagePosition] = useState({ x: 0, y: 0, width: 0, height: 0 });
+  
+  // Get and update developer image position
+  useEffect(() => {
+    const updateDeveloperImagePosition = () => {
+      const profileElement = document.querySelector('#home .md\\:w-1\\/2:last-child .relative');
+      if (profileElement) {
+        const rect = profileElement.getBoundingClientRect();
+        setDeveloperImagePosition({
+          x: rect.left + window.scrollX,
+          y: rect.top + window.scrollY,
+          width: rect.width,
+          height: rect.height
+        });
+      }
+    };
+    
+    // Initial position check
+    updateDeveloperImagePosition();
+    
+    // Update on resize
+    window.addEventListener('resize', updateDeveloperImagePosition);
+    
+    return () => {
+      window.removeEventListener('resize', updateDeveloperImagePosition);
+    };
+  }, []);
   
   // Generate random colors for the fireworks
   const getRandomColor = useCallback(() => {
@@ -42,14 +69,16 @@ const Fireworks = () => {
     return { id, x, y, color, particles };
   }, [getRandomColor]);
   
-  // Add a firework at a random position
+  // Add a firework at a random position within the developer image
   const addRandomFirework = useCallback(() => {
     if (!isActive) return;
     
-    const x = Math.random() * window.innerWidth;
-    const y = Math.random() * (window.innerHeight / 2); // Top half of the screen
+    // Generate random position within the developer image area
+    const { x, y, width, height } = developerImagePosition;
+    const randomX = x + Math.random() * width;
+    const randomY = y + Math.random() * height;
     
-    const newFirework = createFirework(x, y);
+    const newFirework = createFirework(randomX, randomY);
     
     setFireworks(prev => [...prev, newFirework]);
     
@@ -58,25 +87,35 @@ const Fireworks = () => {
       setFireworks(prev => prev.filter(fw => fw.id !== newFirework.id));
     }, 700);
     
-  }, [createFirework, isActive]);
+  }, [createFirework, isActive, developerImagePosition]);
   
-  // Add fireworks on click
+  // Add fireworks on developer image click
   const handleClick = useCallback((e: MouseEvent) => {
-    const newFirework = createFirework(e.clientX, e.clientY);
+    const { x, y, width, height } = developerImagePosition;
     
-    setFireworks(prev => [...prev, newFirework]);
-    
-    // Remove the firework after animation completes
-    setTimeout(() => {
-      setFireworks(prev => prev.filter(fw => fw.id !== newFirework.id));
-    }, 700);
-  }, [createFirework]);
+    // Check if click is within the developer image area
+    if (
+      e.clientX + window.scrollX >= x &&
+      e.clientX + window.scrollX <= x + width &&
+      e.clientY + window.scrollY >= y &&
+      e.clientY + window.scrollY <= y + height
+    ) {
+      const newFirework = createFirework(e.clientX + window.scrollX, e.clientY + window.scrollY);
+      
+      setFireworks(prev => [...prev, newFirework]);
+      
+      // Remove the firework after animation completes
+      setTimeout(() => {
+        setFireworks(prev => prev.filter(fw => fw.id !== newFirework.id));
+      }, 700);
+    }
+  }, [createFirework, developerImagePosition]);
   
   useEffect(() => {
     // Set random fireworks interval
     let interval: NodeJS.Timeout | null = null;
     
-    if (isActive) {
+    if (isActive && developerImagePosition.width > 0) {
       interval = setInterval(addRandomFirework, 800);
     }
     
@@ -87,7 +126,7 @@ const Fireworks = () => {
       if (interval) clearInterval(interval);
       window.removeEventListener('click', handleClick);
     };
-  }, [addRandomFirework, handleClick, isActive]);
+  }, [addRandomFirework, handleClick, isActive, developerImagePosition]);
   
   // Activate fireworks when scrolling to Welcome section
   useEffect(() => {
@@ -114,7 +153,13 @@ const Fireworks = () => {
         <div
           key={firework.id}
           className="firework"
-          style={{ left: firework.x, top: firework.y }}
+          style={{ 
+            position: 'absolute',
+            left: firework.x, 
+            top: firework.y,
+            pointerEvents: 'none',
+            zIndex: 100
+          }}
         >
           <div
             className="firework-explosion"
