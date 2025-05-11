@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ExternalLink, Github } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +7,32 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Portfolio = () => {
   const [activeTab, setActiveTab] = useState("all");
+  
+  // Intersection Observer for scroll animations
+  const animateOnScroll = (entries: IntersectionObserverEntry[]) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('opacity-100');
+        entry.target.classList.remove('opacity-0', 'translate-y-10');
+      }
+    });
+  };
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver(animateOnScroll, {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    });
+    
+    document.querySelectorAll('.scroll-animation').forEach(el => {
+      observer.observe(el);
+    });
+    
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
   
   const experiences = [
     {
@@ -84,17 +110,21 @@ const Portfolio = () => {
     : projects.filter(project => project.category === activeTab);
 
   return (
-    <section id="portfolio" className="py-20">
+    <section id="portfolio" className="py-20 overflow-hidden">
       <div className="section-container">
-        <h2 className="section-title">Portfolio</h2>
+        <h2 className="section-title scroll-animation opacity-0 translate-y-10 transition-all duration-700">Portfolio</h2>
         
         {/* Experience Timeline */}
         <div className="mb-16">
-          <h3 className="text-2xl font-semibold mb-8 text-navy-900">Work Experience</h3>
+          <h3 className="text-2xl font-semibold mb-8 text-navy-900 scroll-animation opacity-0 translate-y-10 transition-all duration-700">Work Experience</h3>
           <div className="space-y-8">
             {experiences.map((exp, index) => (
-              <div key={index} className="relative pl-8 border-l-2 border-blue-500">
-                <div className="absolute left-[-8px] top-0 w-3.5 h-3.5 rounded-full bg-blue-500"></div>
+              <div 
+                key={index} 
+                className="relative pl-8 border-l-2 border-blue-500 scroll-animation opacity-0 translate-y-10 transition-all duration-700"
+                style={{ transitionDelay: `${index * 200}ms` }}
+              >
+                <div className="absolute left-[-8px] top-0 w-3.5 h-3.5 rounded-full bg-blue-500 animate-pulse"></div>
                 <h4 className="text-lg font-semibold text-navy-900">{exp.role}</h4>
                 <div className="flex justify-between text-sm text-gray-500 mb-2">
                   <span>{exp.company}</span>
@@ -103,7 +133,7 @@ const Portfolio = () => {
                 <p className="text-gray-600 mb-2">{exp.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {exp.technologies.map((tech) => (
-                    <Badge key={tech} variant="outline" className="bg-blue-50">
+                    <Badge key={tech} variant="outline" className="bg-blue-50 hover-lift">
                       {tech}
                     </Badge>
                   ))}
@@ -114,9 +144,14 @@ const Portfolio = () => {
         </div>
         
         {/* Projects */}
-        <h3 className="text-2xl font-semibold mb-8 text-navy-900">Projects</h3>
+        <h3 className="text-2xl font-semibold mb-8 text-navy-900 scroll-animation opacity-0 translate-y-10 transition-all duration-700">Projects</h3>
         
-        <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="mb-8">
+        <Tabs 
+          defaultValue="all" 
+          value={activeTab} 
+          onValueChange={setActiveTab} 
+          className="mb-8 scroll-animation opacity-0 translate-y-10 transition-all duration-700"
+        >
           <TabsList>
             <TabsTrigger value="all">All</TabsTrigger>
             <TabsTrigger value="frontend">Frontend</TabsTrigger>
@@ -127,26 +162,30 @@ const Portfolio = () => {
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map((project, index) => (
-            <Card key={index} className="overflow-hidden border-none shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1">
-              <div className={`h-48 ${project.image} flex items-center justify-center text-gray-400`}>
-                <span className="text-sm">Project Image</span>
+            <Card 
+              key={index} 
+              className="overflow-hidden border-none shadow-md hover:shadow-lg transition-all card-3d-effect scroll-animation opacity-0 translate-y-10 transition-all duration-700"
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <div className={`h-48 ${project.image} flex items-center justify-center text-gray-400 overflow-hidden group`}>
+                <span className="text-sm group-hover:scale-110 transition-transform">Project Image</span>
               </div>
               <CardContent className="pt-6">
                 <h4 className="text-lg font-semibold mb-2 text-navy-900">{project.title}</h4>
                 <p className="text-gray-600 text-sm mb-4">{project.description}</p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.technologies.map((tech) => (
-                    <Badge key={tech} variant="secondary" className="text-xs">
+                    <Badge key={tech} variant="secondary" className="text-xs hover-lift">
                       {tech}
                     </Badge>
                   ))}
                 </div>
                 <div className="flex gap-4">
-                  <a href={project.links.demo} className="flex items-center text-sm text-blue-600 hover:text-blue-800">
+                  <a href={project.links.demo} className="flex items-center text-sm text-blue-600 hover:text-blue-800 transition-transform hover:translate-x-1">
                     <ExternalLink size={16} className="mr-1" />
                     Live Demo
                   </a>
-                  <a href={project.links.github} className="flex items-center text-sm text-gray-600 hover:text-gray-800">
+                  <a href={project.links.github} className="flex items-center text-sm text-gray-600 hover:text-gray-800 transition-transform hover:translate-x-1">
                     <Github size={16} className="mr-1" />
                     Source Code
                   </a>

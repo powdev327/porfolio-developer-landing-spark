@@ -96,3 +96,116 @@
     @apply absolute bottom-0 left-0 h-1 w-20 bg-blue-500 mt-2;
   }
 }
+
+/* Animation keyframes */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-shadow {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(59, 130, 246, 0);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
+}
+
+@keyframes tilt {
+  0%, 100% {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+  25% {
+    transform: rotateX(3deg) rotateY(-3deg);
+  }
+  50% {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+  75% {
+    transform: rotateX(-3deg) rotateY(3deg);
+  }
+}
+
+@keyframes fade-slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes reveal-text {
+  0% {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  }
+  100% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+/* Animation utility classes */
+@layer utilities {
+  .animate-float {
+    animation: float 5s ease-in-out infinite;
+  }
+  
+  .animate-pulse-shadow {
+    animation: pulse-shadow 3s ease-in-out infinite;
+  }
+  
+  .animate-tilt {
+    animation: tilt 6s ease-in-out infinite;
+    perspective: 1000px;
+  }
+  
+  .animate-fade-slide-up {
+    animation: fade-slide-up 0.8s ease forwards;
+  }
+  
+  .animate-reveal-text {
+    animation: reveal-text 1s ease forwards;
+  }
+  
+  .anim-delay-100 {
+    animation-delay: 100ms;
+  }
+  
+  .anim-delay-200 {
+    animation-delay: 200ms;
+  }
+  
+  .anim-delay-300 {
+    animation-delay: 300ms;
+  }
+  
+  .anim-delay-400 {
+    animation-delay: 400ms;
+  }
+  
+  .anim-delay-500 {
+    animation-delay: 500ms;
+  }
+  
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-2;
+  }
+  
+  .card-3d-effect {
+    @apply transition-all duration-300 ease-out;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+  }
+  
+  .card-3d-effect:hover {
+    transform: rotateX(5deg) rotateY(5deg);
+    box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.2);
+  }
+}
