@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef } from "react";
-import { ArrowDown, Github, Linkedin, Mail, Fireworks as FireworksIcon } from "lucide-react";
+import { ArrowDown, Github, Linkedin, Mail, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Welcome = () => {
@@ -60,7 +60,7 @@ const Welcome = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-slide-up anim-delay-400">
             <Button className="bg-blue-600 hover:bg-blue-700 hover-lift">
-              <FireworksIcon className="mr-2 h-4 w-4" />
+              <Sparkles className="mr-2 h-4 w-4" />
               View My Work
             </Button>
             <Button variant="outline" className="border-blue-500 text-blue-400 hover:bg-blue-900/20 hover-lift">
