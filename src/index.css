@@ -7,38 +7,6 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 221 83% 53%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221 83% 53%;
-
-    --radius: 0.5rem;
-  }
-
-  .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
 
@@ -66,6 +34,8 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
+
+    --radius: 0.5rem;
   }
 }
 
@@ -80,7 +50,7 @@
   }
 
   .highlight {
-    @apply text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600;
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400;
   }
 
   .section-container {
@@ -151,6 +121,32 @@
   }
 }
 
+/* Fireworks Animation */
+@keyframes firework-explosion {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes firework-particles {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(
+      calc(-50% + var(--dx) * 120px),
+      calc(-50% + var(--dy) * 120px)
+    );
+  }
+}
+
 /* Animation utility classes */
 @layer utilities {
   .animate-float {
@@ -206,6 +202,30 @@
   
   .card-3d-effect:hover {
     transform: rotateX(5deg) rotateY(5deg);
-    box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 25px rgba(0, 40, 100, 0.4);
+  }
+  
+  /* Glass morphism effect for dark mode */
+  .glass-dark {
+    @apply backdrop-blur-md bg-white/5 border border-white/10;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Fireworks utilities */
+  .firework {
+    @apply fixed pointer-events-none z-30;
+  }
+  
+  .firework-explosion {
+    @apply absolute rounded-full;
+    width: 6px;
+    height: 6px;
+    transform: translate(-50%, -50%) scale(0);
+    animation: firework-explosion 0.7s ease-out forwards;
+  }
+  
+  .firework-particle {
+    @apply absolute w-1 h-1 rounded-full;
+    animation: firework-particles 0.7s ease-out forwards;
   }
 }

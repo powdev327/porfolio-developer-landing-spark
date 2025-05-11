@@ -13,22 +13,22 @@ const About = () => {
 
   const services = [
     {
-      icon: <Globe className="h-8 w-8 text-blue-500" />,
+      icon: <Globe className="h-8 w-8 text-blue-400" />,
       title: "Web Development",
       description: "End-to-end web application development with focus on performance and scalability."
     },
     {
-      icon: <Laptop className="h-8 w-8 text-blue-500" />,
+      icon: <Laptop className="h-8 w-8 text-blue-400" />,
       title: "Frontend Engineering",
       description: "Creating responsive, accessible, and modern user interfaces with the latest technologies."
     },
     {
-      icon: <Server className="h-8 w-8 text-blue-500" />,
+      icon: <Server className="h-8 w-8 text-blue-400" />,
       title: "Backend Development",
       description: "Building robust APIs, server architecture, and microservices that power your applications."
     },
     {
-      icon: <Code className="h-8 w-8 text-blue-500" />,
+      icon: <Code className="h-8 w-8 text-blue-400" />,
       title: "Technical Consultation",
       description: "Expert advice on technology stack selection, system design, and problem solving."
     }
@@ -61,17 +61,17 @@ const About = () => {
   }, []);
 
   return (
-    <section id="about" className="py-20 bg-gray-50">
+    <section id="about" className="py-20 bg-navy-900/50">
       <div className="section-container">
-        <h2 className="section-title scroll-animation opacity-0 translate-y-10 transition-all duration-700">About Me</h2>
+        <h2 className="section-title text-white scroll-animation opacity-0 translate-y-10 transition-all duration-700">About Me</h2>
         
         <div className="grid md:grid-cols-2 gap-12 mb-16">
           <div className="scroll-animation opacity-0 translate-y-10 transition-all duration-700" style={{ transitionDelay: '100ms' }}>
-            <p className="text-lg text-gray-600 mb-6">
+            <p className="text-lg text-gray-300 mb-6">
               I'm a passionate Full Stack Developer with 5+ years of experience designing and implementing innovative web solutions. 
               I thrive in collaborative environments and enjoy solving complex technical challenges.
             </p>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-300">
               My approach combines clean, efficient code with thoughtful user experience design to create applications that are both powerful and intuitive.
               I'm constantly learning and exploring new technologies to stay on the cutting edge of web development.
             </p>
@@ -81,11 +81,11 @@ const About = () => {
             {skills.map((skillGroup, idx) => (
               <div 
                 key={skillGroup.category} 
-                className="p-4 bg-white rounded-lg shadow-sm card-3d-effect scroll-animation opacity-0 translate-y-10 transition-all duration-700"
+                className="p-4 glass-dark rounded-lg shadow-md card-3d-effect scroll-animation opacity-0 translate-y-10 transition-all duration-700"
                 style={{ transitionDelay: `${(idx + 1) * 100}ms` }}
               >
-                <h3 className="font-semibold text-navy-900 mb-2">{skillGroup.category}</h3>
-                <ul className="text-gray-600 text-sm">
+                <h3 className="font-semibold text-blue-400 mb-2">{skillGroup.category}</h3>
+                <ul className="text-gray-300 text-sm">
                   {skillGroup.items.map((skill) => (
                     <li key={skill} className="mb-1 flex items-center">
                       <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
@@ -98,18 +98,18 @@ const About = () => {
           </div>
         </div>
         
-        <h3 className="text-2xl font-semibold mb-8 text-navy-900 scroll-animation opacity-0 translate-y-10 transition-all duration-700">What I Do</h3>
+        <h3 className="text-2xl font-semibold mb-8 text-white scroll-animation opacity-0 translate-y-10 transition-all duration-700">What I Do</h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => (
             <Card 
               key={index} 
-              className="border-none shadow-md hover:shadow-lg transition-shadow card-3d-effect scroll-animation opacity-0 translate-y-10 transition-all duration-700"
+              className="glass-dark border-none shadow-lg hover:shadow-blue-900/20 transition-shadow card-3d-effect scroll-animation opacity-0 translate-y-10 transition-all duration-700"
               style={{ transitionDelay: `${(index + 1) * 100}ms` }}
             >
               <CardContent className="pt-6">
                 <div className="mb-4 animate-float" style={{ animationDelay: `${index * 0.5}s` }}>{service.icon}</div>
-                <h4 className="text-lg font-semibold mb-2 text-navy-900">{service.title}</h4>
-                <p className="text-gray-600 text-sm">{service.description}</p>
+                <h4 className="text-lg font-semibold mb-2 text-blue-400">{service.title}</h4>
+                <p className="text-gray-300 text-sm">{service.description}</p>
               </CardContent>
             </Card>
           ))}
